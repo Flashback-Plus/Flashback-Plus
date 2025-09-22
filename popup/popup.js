@@ -1,12 +1,12 @@
 // popup.js - updated to show light-ignored users grouped by thread
 
-const storage = chrome.storage;
+const storage = browser.storage.local;
 const storageKeyHidden = "hiddenFlashbackThreads";
 const storageKeyMarked = "markedFlashbackThreads";
 
 // Helper
 function getActiveFlashbackTab(callback) {
-  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+  browser.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     const tab = tabs[0];
     if (tab && tab.url && tab.url.includes("flashback.org")) {
       callback(tab);
@@ -19,7 +19,7 @@ function getActiveFlashbackTab(callback) {
 // --- Ignored Users UI (permanent) ---
 function renderIgnoredUsers() {
   getActiveFlashbackTab((tab) => {
-    chrome.tabs.sendMessage(tab.id, { type: "EXPORT_POSTS" }, (data) => {
+    browser.tabs.sendMessage(tab.id, { type: "EXPORT_POSTS" }, (data) => {
       const ignored = data?.usersIgnored || [];
       const listEl = document.getElementById("ignoredList");
       listEl.innerHTML = "";
@@ -40,7 +40,7 @@ function renderIgnoredUsers() {
         btn.addEventListener("click", () => {
           const newList = ignored.filter(u => u !== user);
           // update content script
-          chrome.tabs.sendMessage(
+          browser.tabs.sendMessage(
             tab.id,
             { type: "IMPORT_POSTS", usersIgnored: newList },
             () => {
@@ -59,7 +59,7 @@ function renderIgnoredUsers() {
 // --- Light-ignored UI (per-thread mapping) ---
 function renderLightIgnored() {
   getActiveFlashbackTab((tab) => {
-    chrome.tabs.sendMessage(tab.id, { type: "EXPORT_POSTS" }, (data) => {
+    browser.tabs.sendMessage(tab.id, { type: "EXPORT_POSTS" }, (data) => {
       const mapping = data?.lightIgnored || {};
       const listEl = document.getElementById("lightIgnoredList");
       listEl.innerHTML = "";
@@ -97,7 +97,7 @@ function renderLightIgnored() {
           btn.className = "unignore-btn";
           btn.addEventListener("click", () => {
             // ask content script to remove this mapping entry
-            chrome.tabs.sendMessage(tab.id, { type: "REMOVE_LIGHT_IGNORE", threadKey, username: user }, (res) => {
+            browser.tabs.sendMessage(tab.id, { type: "REMOVE_LIGHT_IGNORE", threadKey, username: user }, (res) => {
               // re-render after change
               setTimeout(renderLightIgnored, 150);
             });
@@ -120,7 +120,7 @@ document.getElementById("resetBtn").addEventListener("click", () => {
   // clear storage.local thread states and localStorage via content script
   storage.local.remove([storageKeyHidden, storageKeyMarked], () => {
     getActiveFlashbackTab((tab) => {
-      chrome.tabs.sendMessage(
+      browser.tabs.sendMessage(
         tab.id,
         {
           type: "IMPORT_POSTS",
@@ -130,7 +130,7 @@ document.getElementById("resetBtn").addEventListener("click", () => {
           lightIgnored: {}
         },
         () => {
-          chrome.tabs.reload(tab.id);
+          browser.tabs.reload(tab.id);
           alert("All data har återställts.");
           renderIgnoredUsers();
           renderLightIgnored();
@@ -147,7 +147,7 @@ document.getElementById("exportBtn").addEventListener("click", () => {
     const threadsMarked = result[storageKeyMarked] || [];
 
     getActiveFlashbackTab((tab) => {
-      chrome.tabs.sendMessage(tab.id, { type: "EXPORT_POSTS" }, (postData) => {
+      browser.tabs.sendMessage(tab.id, { type: "EXPORT_POSTS" }, (postData) => {
         const data = {
           threadsHidden,
           threadsMarked,
@@ -194,7 +194,7 @@ document.getElementById("fileInput").addEventListener("change", function () {
       });
 
       getActiveFlashbackTab((tab) => {
-        chrome.tabs.sendMessage(
+        browser.tabs.sendMessage(
           tab.id,
           {
             type: "IMPORT_POSTS",
@@ -204,7 +204,7 @@ document.getElementById("fileInput").addEventListener("change", function () {
             lightIgnored: data.lightIgnored || {}
           },
           () => {
-            chrome.tabs.reload(tab.id);
+            browser.tabs.reload(tab.id);
             alert("Data importerad!");
             renderIgnoredUsers();
             renderLightIgnored();
