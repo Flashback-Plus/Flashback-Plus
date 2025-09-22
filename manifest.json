@@ -2,7 +2,10 @@
   "manifest_version": 3,
   "name": "Flashback Plus",
   "version": "6.1.1",
+  "license": "MPL-2.0",
   "description": "Lägg till knappar för att gilla, ignorera och dölja inlägg/trådar på Flashback.org.",
+  "author": "Original: pOXE (Flashback.org user); Maintainer: Mr-RedHat-fb (Mr.RedHat Flashback.org user)",
+  "homepage_url": "https://flashback-plus.github.io/Flashback-Plus",
 
   "permissions": [
     "storage",
