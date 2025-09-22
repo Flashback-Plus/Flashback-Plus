@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <title>Flashback Plus</title>
+  <style>
+    body { font-family: sans-serif; padding: 10px; width: 520px; }
+    h3 { margin-top: 0; font-size: 16px; }
+    button {
+      display: block;
+      width: 100%;
+      margin: 5px 0;
+      padding: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      border: none;
+      border-radius: 4px;
+    }
+    #resetBtn { background: #921818; color: #fff; }
+    #exportBtn { background: #4CAF50; color: #fff; }
+    #importBtn { background: #2196F3; color: #fff; }
+
+    #ignoredUsers, #lightIgnoredSection { margin-top: 12px; }
+    .ignored-user {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 4px 6px;
+      background: #f1f1f1;
+      border-radius: 4px;
+      margin-bottom: 4px;
+      font-size: 13px;
+    }
+    .unignore-btn {
+      background: #000;
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      padding: 2px 6px;
+      cursor: pointer;
+      font-size: 12px;
+      margin-left:5px;
+      width:60px;
+    }
+    .light-thread {
+      margin-bottom: 8px;
+      padding: 6px;
+      border-radius: 6px;
+      background: #fff8f0;
+      border: 1px solid #efe0d0;
+    }
+    .thread-key a {
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+    }
+    #listsContainer {
+      max-height: 320px;
+      overflow: auto;
+      padding-right: 6px;
+    }
+  </style>
+</head>
+<body>
+  <h3>Flashback Plus V6</h3>
+  <p>Flashback : likes : ignorera : dölj : light-ignore</p>
+
+  <div style="display:flex; gap:6px;">
+    <button id="exportBtn" style="flex:1">Exportera</button>
+    <button id="importBtn" style="flex:1">Importera</button>
+  </div>
+  <button id="resetBtn">Återställ allt</button>
+  <input type="file" id="fileInput" accept=".json" style="display:none;">
+
+  <hr>
+
+  <div id="listsContainer">
+    <div id="ignoredUsers">
+      <h4>Ignorerade användare (permanent)</h4>
+      <div id="ignoredList"></div>
+    </div>
+
+    <div id="lightIgnoredSection">
+      <h4>Light-ignored (per tråd)</h4>
+      <div id="lightIgnoredList"></div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

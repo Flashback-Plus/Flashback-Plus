@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "Flashback Plus V6",
+  "version": "6.0",
+  "description": "Hide/like/ignore buttons to Flashback.org",
+  "permissions": [
+    "storage",
+    "scripting",
+    "activeTab"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.flashback.org/t*",
+        "https://www.flashback.org/s*",
+        "https://www.flashback.org/p*",
+        "https://www.flashback.org/f*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Flashback Plus V6"
+  }
+}
