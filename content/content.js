@@ -1,30 +1,30 @@
 // content.js - updated with Light-ignore feature
 
 // --- Storage setup ---
-const storage = (typeof browser !== 'undefined') ? browser.storage : chrome.storage;
+const storage = browser.storage.local;
 const storageKeyHidden = "hiddenFlashbackThreads";
 const storageKeyMarked = "markedFlashbackThreads";
 
 // --- POSTS FUNCTIONS ---
 function getHiddenPosts() {
-  return JSON.parse(localStorage.getItem('fbHiddenPosts') || '[]');
+  return JSON.parse(storage.local.getItem('fbHiddenPosts') || '[]');
 }
 function saveHiddenPosts(hiddenIds) {
-  localStorage.setItem('fbHiddenPosts', JSON.stringify(hiddenIds));
+  storage.local.setItem('fbHiddenPosts', JSON.stringify(hiddenIds));
 }
 function getInterestingPosts() {
-  return JSON.parse(localStorage.getItem('fbInterestingPosts') || '[]');
+  return JSON.parse(storage.local.getItem('fbInterestingPosts') || '[]');
 }
 function saveInterestingPosts(ids) {
-  localStorage.setItem('fbInterestingPosts', JSON.stringify(ids));
+  storage.local.setItem('fbInterestingPosts', JSON.stringify(ids));
 }
 
 // --- IGNORED USERS (permanent) ---
 function getIgnoredUsers() {
-  return JSON.parse(localStorage.getItem('fbIgnoredUsers') || '[]');
+  return JSON.parse(storage.local.getItem('fbIgnoredUsers') || '[]');
 }
 function saveIgnoredUsers(usernames) {
-  localStorage.setItem('fbIgnoredUsers', JSON.stringify(usernames));
+  storage.local.setItem('fbIgnoredUsers', JSON.stringify(usernames));
 }
 function applyIgnoredUsers() {
   const ignored = getIgnoredUsers();
@@ -50,13 +50,13 @@ function applyIgnoredUsersToThreads() {
 // stored shape: { "<threadKey>": ["user1","user2"], ... }
 function getLightIgnored() {
   try {
-    return JSON.parse(localStorage.getItem('fbLightIgnored') || '{}');
+    return JSON.parse(storage.local.getItem('fbLightIgnored') || '{}');
   } catch (e) {
     return {};
   }
 }
 function saveLightIgnored(obj) {
-  localStorage.setItem('fbLightIgnored', JSON.stringify(obj));
+  storage.local.setItem('fbLightIgnored', JSON.stringify(obj));
 }
 function addLightIgnore(threadKey, username) {
   if (!threadKey || !username) return;
