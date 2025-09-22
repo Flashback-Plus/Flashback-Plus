@@ -1,13 +1,23 @@
 {
   "manifest_version": 3,
-  "name": "Flashback Plus V6",
-  "version": "6.0",
-  "description": "Hide/like/ignore buttons to Flashback.org",
+  "name": "Flashback Plus",
+  "version": "6.1.1",
+  "description": "Lägg till knappar för att gilla, ignorera och dölja inlägg/trådar på Flashback.org.",
+
   "permissions": [
     "storage",
     "scripting",
+    "tabs",
     "activeTab"
   ],
+  "host_permissions": [
+    "https://www.flashback.org/*"
+  ],
+
+  "background": {
+    "service_worker": "background.js"
+  },
+
   "content_scripts": [
     {
       "matches": [
@@ -16,12 +26,26 @@
         "https://www.flashback.org/p*",
         "https://www.flashback.org/f*"
       ],
-      "js": ["content.js"],
+      "js": ["vendor/browser-polyfill.js", "content/content.js"],
       "run_at": "document_idle"
     }
   ],
+
   "action": {
-    "default_popup": "popup.html",
-    "default_title": "Flashback Plus V6"
+    "default_popup": "popup/popup.html",
+    "default_title": "Flashback Plus"
+  },
+
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+
+  "browser_specific_settings": {
+    "gecko": {
+      "strict_min_version": "109.0"
+    }
   }
 }
+
